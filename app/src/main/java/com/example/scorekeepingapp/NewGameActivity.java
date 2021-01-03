@@ -51,7 +51,11 @@ public class NewGameActivity extends AppCompatActivity {
                 team1point[0]=team1point[0]+1;
                 pointviewteam1.setText(team1point[0]+"");
                 updateTeam1Info(edittext1.getText().toString(), team1point[0]);
-                checkWinner(team1point[0]);
+                if(team1point[0] == 29) {
+                    Intent intent = new Intent(getBaseContext(), WinPage.class);
+                    startActivity(intent);
+                    updateLoserTeamInfo(edittext2.getText().toString(), team2point[0]);
+                }
             }
         });
         addpointteam2.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +63,13 @@ public class NewGameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 team2point[0] = team2point[0] +1;
                 pointviewteam2.setText(team2point[0]+"");
-                updateTeam2Info(edittext2.getText().toString(), team2point[0]);
-                checkWinner(team2point[0]);
+                updateTeam2Info(edittext1.getText().toString(), team2point[0]);
+                if(team2point[0] == 29) {
+                    Intent intent = new Intent(getBaseContext(), WinPage.class);
+                    startActivity(intent);
+                    updateLoserTeamInfo(edittext1.getText().toString(), team1point[0]);
+
+                }
             }
         });
         subpoint1.setOnClickListener(new View.OnClickListener() {
@@ -76,12 +85,16 @@ public class NewGameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 team2point[0] = team2point[0]-1;
                 pointviewteam2.setText(team2point[0]+"");
-                updateTeam2Info(edittext2.getText().toString(), team2point[0]);
+                updateTeam1Info(edittext2.getText().toString(), team2point[0]);
             }
         });
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                long score1 = readFromDB();
+//                Toast toast = Toast.makeText(getApplicationContext(), score1+"", Toast.LENGTH_SHORT);
+//                toast.show();
+
                 team1point[0]=0;
                 team2point[0]=0;
                 pointviewteam1.setText("0");
@@ -110,6 +123,8 @@ public class NewGameActivity extends AppCompatActivity {
         values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_TEAM_NAME2, teamname2);
         values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1, 0);
         values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE2, 0);
+        values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSERSCORE, 0);
+        values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSER, "");
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(AppDataRepo.TeamScoreEntry.TABLE_NAME, null, values);
@@ -117,66 +132,31 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void updateTeam1Info(String teamName, int value) {
-        updateDb(true, teamName, value);
+        updateDb(1, teamName, value);
     }
     public void updateTeam2Info(String teamName, int value) {
-        updateDb(false, teamName, value);
+        updateDb(2, teamName, value);
     }
-    private void updateDb( Boolean team1, String teamname, int value) {
+    public void updateLoserTeamInfo(String teamName, int value){
+        updateDb(3, teamName, value);
+    }
+    private void updateDb( int team1, String teamname, int value) {
         // Gets the data repository in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        if(team1) {
+        if(team1==1) {
             values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_TEAM_NAME1, teamname);
             values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1, value);
-        } else
+        } else if (team1==2)
         {
             values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_TEAM_NAME2, teamname);
             values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE2, value);
+        } else
+        {
+            values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSER, teamname);
+            values.put(AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSERSCORE, value);
         }
         db.update(AppDataRepo.TeamScoreEntry.TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(newGameId)});
     }
 
-    private long readFromDB(){
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                BaseColumns._ID,
-                AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1,
-                AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE2,
-        };
-
-        // Filter results WHERE "word" = 'My Word'
-        String selection = AppDataRepo.TeamScoreEntry._ID + " = ?";
-        String[] selectionArgs = { String.valueOf(newGameId)};
-
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                AppDataRepo.TeamScoreEntry._ID + " DESC";
-
-        Cursor cursor = db.query(
-                AppDataRepo.TeamScoreEntry.TABLE_NAME,   // The table to query
-                projection,             // The array of columns to return (pass null to get all)
-                selection,              // The columns for the WHERE clause
-                selectionArgs,          // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
-                sortOrder               // The sort order
-        );
-
-        // Now read value
-        cursor.moveToNext();
-        long score1 = cursor.getLong(cursor.getColumnIndexOrThrow(AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1));
-        long score2 = cursor.getLong(cursor.getColumnIndexOrThrow(AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1));
-        return score1;
-    }
-
-    private void checkWinner(int point){
-        if(point == 29) {
-            Intent intent = new Intent(getBaseContext(), WinPage.class);
-            startActivity(intent);
-        }
-    }
 }

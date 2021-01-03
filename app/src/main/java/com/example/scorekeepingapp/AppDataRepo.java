@@ -12,6 +12,9 @@ public class AppDataRepo {
         public static final String COLUMN_NAME_SCORE1 = "Score1";
         public static final String COLUMN_NAME_SCORE2 = "Score2";
         public static final String COLUMN_NAME_DATETIME = "DateAndTime";
+        public static final String COLUMN_NAME_LOSERSCORE = "LoserScore";
+        public static final String COLUMN_NAME_LOSER = "Loser";
+
     }
 
     private static final String SQL_CREATE_ENTRIES =
@@ -22,6 +25,8 @@ public class AppDataRepo {
                     TeamScoreEntry.COLUMN_NAME_SCORE1 + " INT" +
                     TeamScoreEntry.COLUMN_NAME_SCORE2 + " INT" +
                     TeamScoreEntry.COLUMN_NAME_DATETIME + " DATETIME" +
+                    TeamScoreEntry.COLUMN_NAME_LOSERSCORE + "LOSERSCORE" +
+                    TeamScoreEntry.COLUMN_NAME_LOSER + "LOSER" +
                     ")";
 
     private static final String SQL_DELETE_ENTRIES =

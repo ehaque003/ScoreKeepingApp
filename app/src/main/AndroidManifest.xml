@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ScoreKeepingApp">
-        <activity android:name=".PreviousGames"></activity>
+        <activity android:name=".LosersPage"></activity>
+        <activity android:name=".PreviousGames" />
         <activity android:name=".WinPage" />
         <activity android:name=".MainActivity">
             <intent-filter>

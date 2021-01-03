@@ -16,7 +16,9 @@ public class AppDataDBHelper extends SQLiteOpenHelper {
                     AppDataRepo.TeamScoreEntry.COLUMN_NAME_TEAM_NAME2 + " TEXT," +
                     AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1 + " INT," +
                     AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE2 + " INT," +
-                    AppDataRepo.TeamScoreEntry.COLUMN_NAME_DATETIME + "DATETIME)";
+                    AppDataRepo.TeamScoreEntry.COLUMN_NAME_DATETIME + "DATETIME ,"+
+                    AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSERSCORE + "LOSERSCORE ,"+
+                    AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSER + "LOSER)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + AppDataRepo.TeamScoreEntry.TABLE_NAME;

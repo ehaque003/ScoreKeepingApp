@@ -7,47 +7,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TableLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreviousGames extends AppCompatActivity {
-
+public class LosersPage extends AppCompatActivity {
     AppDataDBHelper dbHelper = null;
-    ScoreTableAdapter scoreTableAdapter;
-    List<ScoreTableRow> scoreTableRows = new ArrayList<ScoreTableRow>();
+    LoserTableAdapter LoserTableAdapter;
+    List<LoserTableRow> LoserTableRow = new ArrayList<LoserTableRow>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_previous_games);
-        dbHelper = new AppDataDBHelper(getBaseContext());
-        createDataRow();
-
-        // set up the RecyclerView
+        setContentView(R.layout.activity_losers_page);
         RecyclerView recyclerView = findViewById(R.id.rvScoreTable);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        scoreTableAdapter = new ScoreTableAdapter(this, scoreTableRows);
-//        scoreTableAdapter.setClickListener((ScoreTableAdapter.ItemClickListener) this);
-        recyclerView.setAdapter(scoreTableAdapter);
+        LoserTableAdapter = new LoserTableAdapter(this, LoserTableRow);
+        recyclerView.setAdapter(LoserTableAdapter);
     }
-
     private Cursor readFromDB(){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
-                AppDataRepo.TeamScoreEntry._ID,
-                AppDataRepo.TeamScoreEntry.COLUMN_NAME_TEAM_NAME1,
-                AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1,
-                AppDataRepo.TeamScoreEntry.COLUMN_NAME_TEAM_NAME2,
-                AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE2,
+                AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSER,
+                AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSERSCORE,
         };
 
         // How you want the results sorted in the resulting Cursor
@@ -65,20 +50,16 @@ public class PreviousGames extends AppCompatActivity {
         );
         return cursor;
     }
-
     private void createDataRow(){
         Cursor cursor = readFromDB();
         cursor.moveToFirst();
         do {
-            ScoreTableRow scoreTableRow = new ScoreTableRow();
-            scoreTableRow.name1 = cursor.getString(1);
-            scoreTableRow.score1 = cursor.getInt(2);
-            scoreTableRow.name2 = cursor.getString(3);
-            scoreTableRow.score2 = cursor.getInt(4);
+            LoserTableRow loserTableRow = new LoserTableRow();
+            loserTableRow.loser = cursor.getString(6);
+            loserTableRow.loserscore = cursor.getInt(6);
 
-            scoreTableRows.add(scoreTableRow);
+            LoserTableRow.add((com.example.scorekeepingapp.LoserTableRow) LoserTableRow);
         } while (cursor.moveToNext());
         cursor.close();
     }
-
 }
