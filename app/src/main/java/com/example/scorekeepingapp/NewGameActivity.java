@@ -51,10 +51,7 @@ public class NewGameActivity extends AppCompatActivity {
                 team1point[0]=team1point[0]+1;
                 pointviewteam1.setText(team1point[0]+"");
                 updateTeam1Info(edittext1.getText().toString(), team1point[0]);
-                if(team1point[0] == 29) {
-                    Intent intent = new Intent(getBaseContext(), WinPage.class);
-                    startActivity(intent);
-                }
+                checkWinner(team1point[0]);
             }
         });
         addpointteam2.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +59,8 @@ public class NewGameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 team2point[0] = team2point[0] +1;
                 pointviewteam2.setText(team2point[0]+"");
-                updateTeam2Info(edittext1.getText().toString(), team2point[0]);
-                if(team2point[0] == 29) {
-                    Intent intent = new Intent(getBaseContext(), WinPage.class);
-                    startActivity(intent);
-                }
+                updateTeam2Info(edittext2.getText().toString(), team2point[0]);
+                checkWinner(team2point[0]);
             }
         });
         subpoint1.setOnClickListener(new View.OnClickListener() {
@@ -82,16 +76,12 @@ public class NewGameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 team2point[0] = team2point[0]-1;
                 pointviewteam2.setText(team2point[0]+"");
-                updateTeam1Info(edittext2.getText().toString(), team2point[0]);
+                updateTeam2Info(edittext2.getText().toString(), team2point[0]);
             }
         });
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                long score1 = readFromDB();
-//                Toast toast = Toast.makeText(getApplicationContext(), score1+"", Toast.LENGTH_SHORT);
-//                toast.show();
-
                 team1point[0]=0;
                 team2point[0]=0;
                 pointviewteam1.setText("0");
@@ -181,5 +171,12 @@ public class NewGameActivity extends AppCompatActivity {
         long score1 = cursor.getLong(cursor.getColumnIndexOrThrow(AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1));
         long score2 = cursor.getLong(cursor.getColumnIndexOrThrow(AppDataRepo.TeamScoreEntry.COLUMN_NAME_SCORE1));
         return score1;
+    }
+
+    private void checkWinner(int point){
+        if(point == 29) {
+            Intent intent = new Intent(getBaseContext(), WinPage.class);
+            startActivity(intent);
+        }
     }
 }
