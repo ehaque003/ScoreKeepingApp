@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final Button newgamebutton = findViewById(R.id.button);
         final Button previousgamebutton = findViewById(R.id.button2);
+        final Button losergamebutton = findViewById(R.id.button4);
         newgamebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -26,6 +27,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), PreviousGames.class);
+                startActivity(intent);
+            }
+        });
+        losergamebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), LosersPage.class);
                 startActivity(intent);
             }
         });
