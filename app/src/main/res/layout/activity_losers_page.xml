@@ -7,7 +7,7 @@
     tools:context=".PreviousGames">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvScoreTable"
+        android:id="@+id/rvLoserTable"
         android:layout_width="273dp"
         android:layout_height="415dp"
         android:layout_marginStart="76dp"

@@ -12,25 +12,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LosersPage extends AppCompatActivity {
-    AppDataDBHelper dbHelper = null;
-    LoserTableAdapter LoserTableAdapter;
-    List<LoserTableRow> LoserTableRow = new ArrayList<LoserTableRow>();
+    LoserTableAdapter loserTableAdapter;
+    List<LoserTableRow> loserTableRows = new ArrayList<LoserTableRow>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_losers_page);
-        RecyclerView recyclerView = findViewById(R.id.rvScoreTable);
+        RecyclerView recyclerView = findViewById(R.id.rvLoserTable);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        LoserTableAdapter = new LoserTableAdapter(this, LoserTableRow);
-        recyclerView.setAdapter(LoserTableAdapter);
+
+        createDataRow();
+        loserTableAdapter = new LoserTableAdapter(this, loserTableRows);
+        recyclerView.setAdapter(loserTableAdapter);
     }
     private Cursor readFromDB(){
+        AppDataDBHelper dbHelper = new AppDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
+                AppDataRepo.TeamScoreEntry._ID,
                 AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSER,
                 AppDataRepo.TeamScoreEntry.COLUMN_NAME_LOSERSCORE,
         };
@@ -55,10 +58,15 @@ public class LosersPage extends AppCompatActivity {
         cursor.moveToFirst();
         do {
             LoserTableRow loserTableRow = new LoserTableRow();
-            loserTableRow.loser = cursor.getString(6);
-            loserTableRow.loserscore = cursor.getInt(6);
+            if (cursor.getString(1).length() > 0) {
+            loserTableRow.loser = cursor.getString(1);
+            } else {
+                loserTableRow.loser = "Empty";
+            }
 
-            LoserTableRow.add((com.example.scorekeepingapp.LoserTableRow) LoserTableRow);
+            loserTableRow.loserscore = cursor.getInt(2);
+
+            loserTableRows.add(loserTableRow);
         } while (cursor.moveToNext());
         cursor.close();
     }

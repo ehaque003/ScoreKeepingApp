@@ -14,22 +14,22 @@ public class AppDataRepo {
         public static final String COLUMN_NAME_DATETIME = "DateAndTime";
         public static final String COLUMN_NAME_LOSERSCORE = "LoserScore";
         public static final String COLUMN_NAME_LOSER = "Loser";
-
     }
 
-    private static final String SQL_CREATE_ENTRIES =
+    public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TeamScoreEntry.TABLE_NAME + " (" +
                     TeamScoreEntry._ID + " INTEGER PRIMARY KEY," +
                     TeamScoreEntry.COLUMN_NAME_TEAM_NAME1 + " TEXT," +
                     TeamScoreEntry.COLUMN_NAME_TEAM_NAME2 + " TEXT," +
-                    TeamScoreEntry.COLUMN_NAME_SCORE1 + " INT" +
-                    TeamScoreEntry.COLUMN_NAME_SCORE2 + " INT" +
-                    TeamScoreEntry.COLUMN_NAME_DATETIME + " DATETIME" +
-                    TeamScoreEntry.COLUMN_NAME_LOSERSCORE + "LOSERSCORE" +
-                    TeamScoreEntry.COLUMN_NAME_LOSER + "LOSER" +
+                    TeamScoreEntry.COLUMN_NAME_SCORE1 + " INT," +
+                    TeamScoreEntry.COLUMN_NAME_SCORE2 + " INT," +
+                    TeamScoreEntry.COLUMN_NAME_DATETIME + " DATETIME," +
+                    TeamScoreEntry.COLUMN_NAME_LOSERSCORE + " INT," +
+                    TeamScoreEntry.COLUMN_NAME_LOSER + " TEXT " +
                     ")";
+//    create table team_score (columna int, colb text, colc datetime)
 
-    private static final String SQL_DELETE_ENTRIES =
+    public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TeamScoreEntry.TABLE_NAME;
 
 }

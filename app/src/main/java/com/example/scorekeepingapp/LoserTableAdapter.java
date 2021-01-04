@@ -33,7 +33,7 @@ public class LoserTableAdapter extends RecyclerView.Adapter<LoserTableAdapter.Vi
     @Override
     public void onBindViewHolder(LoserTableAdapter.ViewHolder holder, int position) {
         LoserTableRow loserTableRow = mData.get(position);
-        holder.loserscore.setText(loserTableRow.loserscore);
+        holder.loserscore.setText(loserTableRow.loserscore +"");
         holder.loserteamname.setText(loserTableRow.loser);
 
     }
